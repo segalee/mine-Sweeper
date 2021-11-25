@@ -1,0 +1,154 @@
+body {
+    background-color: #f1e9ef;
+    background-image: url("https://www.transparenttextures.com/patterns/dark-stripes-light.png");
+    /* background-color: rgb(255, 255, 255); */
+    text-align: center;
+    font-family: "Roboto Sans", monospace;
+}
+
+.game-box {
+    background-color: #fdf7fdc2;
+    background-image: url("https://www.transparenttextures.com/patterns/dark-stripes-light.png");
+    display: inline-block;
+    margin-top: 50px;
+    width: 450px;
+    height: 750px;
+    border-radius: 20px;
+    border: 2px black solid;
+    box-shadow: 18px -7px 5px 4px black;
+}
+
+.game-info {
+    margin-top: 80px;
+    font-size: 20px;
+}
+
+table {
+    margin-top: 5px;
+    display: flex;
+    justify-content: center;
+    border: rgb(125, 125, 133);
+    border-collapse: collapse;
+    box-shadow: black 0 0;
+}
+
+
+/* isShown */
+
+.cell {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    font-size: 1em;
+    border: black 0.5px dotted;
+    border-collapse: collapse;
+    background: rgb(178, 176, 180);
+}
+
+
+/* when table is first shown */
+
+.not-shown {
+    /* width: 25px;
+    height: 25px; */
+    text-align: center;
+    font-size: 1em;
+    border: 0.5px black solid;
+    background: rgb(209, 209, 209);
+    /* box-shadow: inset 0 0 3px #777777; */
+    box-shadow: inset -3px -3px 3px 0px #737373;
+}
+
+.cell:hover {
+    cursor: pointer;
+    background: rgb(178, 176, 180);
+}
+
+.time {
+    font-size: 20px;
+}
+
+.lives {
+    color: rgb(161, 33, 33);
+    /* margin-top: 5px;
+    display: inline-block; */
+}
+
+.levels {
+    margin: 3px;
+}
+
+.level {
+    /* height: 20px; */
+    /* border-radius: 8px; */
+    font-family: "Roboto Sans", monospace;
+    background-color: rgba(134, 132, 136, 0.418);
+    box-shadow: inset 0 0 3px #777777;
+    width: 60px;
+    height: 20px;
+}
+
+.level:hover {
+    cursor: pointer;
+    background-color: rgba(154, 153, 155, 0.418);
+}
+
+.timer {
+    font-size: 20px;
+    font-weight: 300;
+    margin-bottom: 3px;
+}
+
+.smiley {
+    display: inline-block;
+    border: none;
+    font-size: 17px;
+    background-color: rgba(255, 242, 223, 0);
+    /* margin-bottom: 0px; */
+}
+
+.smiley:hover {
+    cursor: pointer;
+}
+
+.rst {
+    font-size: 10px;
+}
+
+.one {
+    color: blue;
+}
+
+.two {
+    color: rgb(16, 116, 7);
+}
+
+.three {
+    color: rgb(160, 9, 9);
+}
+
+.four {
+    color: #000;
+}
+
+
+/* .explosion {
+    background-color: hotpink;
+} */
+
+
+/* 
+.box-top {
+    display: inline-block;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    border: black 1px solid;
+    background-color: rgba(24, 22, 22, 0.74);
+    /* background: linear-gradient(90deg, rgba(41, 41, 41, 1) 35%, rgba(62, 65, 62, 0.72919590199361) 77%, rgba(6, 37, 11, 1) 100%, rgba(182, 182, 182, 1) 100%); */
+
+
+/* box-shadow: rgb(56 55 55 / 61%) 1px 0px 5px 1px;
+    margin: auto;
+    margin-top: 20px;
+} */
