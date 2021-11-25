@@ -11,15 +11,18 @@ var gIsGameOn;
 var gAfterFirstClick;
 //Functions
 
-var gLevel;
+var gLevel = {
+    SIZE: 5,
+    MINES: 3,
+};
 
 var gGame;
 
 function init() {
-    gLevel = {
-        SIZE: 5,
-        MINES: 3,
-    };
+    // gLevel = {
+    //     SIZE: 5,
+    //     MINES: 3,
+    // };
 
     gGame = {
         isOn: true,
@@ -39,6 +42,8 @@ function init() {
     clearInterval(gIntervalId);
     var elSmileyBtn = document.querySelector('.smiley');
     elSmileyBtn.innerHTML = '😃';
+    console.log('gGame.shownCount:', gGame.shownCount);
+    console.log('gGame.markedCount:', gGame.markedCount);
 }
 
 function restartGame(elSmileyBtn) {
@@ -51,7 +56,7 @@ function cellMarked(elCell, elCellI, elCellJ) {
     var currCell = gBoard[elCellI][elCellJ];
     if (currCell.isShown === true) return;
     if (gGame.flags <= 0) return;
-    // checkVictory();
+    checkVictory();
     if (currCell.isMarked === false) {
         // if (gGame.markedCount <= 0) return;
         gGame.markedCount--;
@@ -105,6 +110,7 @@ function gameOver() {
 }
 
 function cellClicked(elCellClicked, elCellI, elCellJ) {
+    checkVictory();
     // if (gBoard[elCellI][elCellJ].isMarked) return;
     var elSmileyBtn = document.querySelector('.smiley');
     if (gBoard[elCellI][elCellJ].isShown) return;
@@ -147,7 +153,7 @@ function cellClicked(elCellClicked, elCellI, elCellJ) {
             gGame.isOn = false;
         }
     }
-    if (gGame.isOn && gGame.shownCount === gLevel.SIZE ** 2) {
+    if (gGame.isOn && gGame.shownCount === gLevel.SIZE ** 2 + gGame.markedCount) {
         console.log('YOU WIN');
         clearInterval(gIntervalId);
         setTimeout(() => {
@@ -281,24 +287,23 @@ function renderBoard(selector) {
     elContainer.innerHTML = strHTML;
 }
 
-// function checkVictory() {
-//     gGame.shownCount = 0;
-//     for (var i = 0; i < gBoard.length; i++) {
-//         for (var j = 0; j < gBoard.length; j++) {
-//             if (gBoard[i][j].isShown === true) gGame.shownCount++;
-//         }
-//     }
-//     console.log('gGame.shownCount:', gGame.shownCount);
-//     if (
-//         gGame.markedCount === 0 &&
-//         gGame.isOn &&
-//         gGame.shownCount === gLevel.SIZE ** 2
-//     ) {
-//         console.log('YOU WIN');
-//         clearInterval(gIntervalId);
+function checkVictory() {
+    gGame.shownCount = 0;
+    for (var i = 0; i < gBoard.length; i++) {
+        for (var j = 0; j < gBoard.length; j++) {
+            if (gBoard[i][j].isShown === true) gGame.shownCount++;
+        }
+    }
+    if (
+        gGame.markedCount === 0 &&
+        gGame.isOn &&
+        gGame.shownCount === gLevel.SIZE ** 2 + gGame.markedCount
+    ) {
+        console.log('YOU WIN');
+        clearInterval(gIntervalId);
 
-//         document.querySelector('.smiley').innerHTML = '😎✌';
-//     }
+        document.querySelector('.smiley').innerHTML = '😎✌';
+    }
 
-//     console.log('victory!');
-// }
+    console.log('victory!');
+}
