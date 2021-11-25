@@ -16,14 +16,17 @@ var gLevel = {
     MINES: 3,
 };
 
-var gGame;
+var gGame = {
+    isOn: true,
+    shownCount: 0,
+    markedCount: 0,
+    secsPassed: 0,
+    flags: gLevel.MINES,
+    lives: 3,
+};
 
 function init() {
-    // gLevel = {
-    //     SIZE: 5,
-    //     MINES: 3,
-    // };
-
+    gAfterFirstClick = false;
     gGame = {
         isOn: true,
         shownCount: 0,
@@ -47,10 +50,15 @@ function init() {
 }
 
 function restartGame(elSmileyBtn) {
+    var elRst = document.querySelector('.rst');
+    elRst.innerHTML = `<div class="rst">Restart?
+    <button class="smiley" onclick="restartGame(this)">😃</button>
+</div>`;
     init();
 }
 
 function cellMarked(elCell, elCellI, elCellJ) {
+    console.log(elCell);
     if (gGame.isOn === false) return;
     if (gAfterFirstClick === false) return;
     var currCell = gBoard[elCellI][elCellJ];
@@ -98,6 +106,8 @@ function livesLeft() {
 }
 
 function gameOver() {
+    gGame.isOn = false;
+    clearInterval(gIntervalId);
     for (var i = 0; i < gBoard.length; i++) {
         for (var j = 0; j < gBoard.length; j++) {
             var cell = gBoard[i][j];
@@ -301,7 +311,7 @@ function checkVictory() {
     ) {
         console.log('YOU WIN');
         clearInterval(gIntervalId);
-
+        gGame.isOn = false;
         document.querySelector('.smiley').innerHTML = '😎✌';
     }
 
