@@ -1,5 +1,6 @@
 var gAudioFlag = new Audio('sound/flag.wav');
 var gAudioMine = new Audio('sound/mine.wav');
+var gAudioWin = new Audio('sound/win.mp3');
 
 var gStartTime;
 var gIntervalDuration;

@@ -49,14 +49,11 @@ table {
 /* when table is first shown */
 
 .not-shown {
-    /* width: 25px;
-    height: 25px; */
     text-align: center;
     font-size: 1em;
-    border: 0.5px black solid;
+    border: 1px rgb(112, 112, 112) solid;
     background: rgb(209, 209, 209);
-    /* box-shadow: inset 0 0 3px #777777; */
-    box-shadow: inset -3px -3px 3px 0px #737373;
+    box-shadow: inset -3px -3px 3px 0px rgb(112, 112, 112);
 }
 
 .cell:hover {
@@ -70,8 +67,6 @@ table {
 
 .lives {
     color: rgb(161, 33, 33);
-    /* margin-top: 5px;
-    display: inline-block; */
 }
 
 .levels {
@@ -131,10 +126,10 @@ table {
     color: #000;
 }
 
-
-/* .explosion {
-    background-color: hotpink;
-} */
+.explosion {
+    background-image: linear-gradient(red, yellow);
+    /* background-color: hotpink; */
+}
 
 
 /* 
