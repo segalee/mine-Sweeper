@@ -55,8 +55,6 @@ function init() {
     clearInterval(gIntervalId);
     var elSmileyBtn = document.querySelector('.smiley');
     elSmileyBtn.innerHTML = '😃';
-    console.log('gGame.shownCount:', gGame.shownCount);
-    console.log('gGame.markedCount:', gGame.markedCount);
 }
 
 function restartGame(elSmileyBtn) {
@@ -166,7 +164,8 @@ function cellClicked(elCellClicked, elCellI, elCellJ) {
     if (gBoard[elCellI][elCellJ].isMine) {
         gAudioBoom.play();
         gGame.minesPressedCount++;
-        console.log('gGame:', gGame);
+        // gGame.flags--;
+        remainFlags();
     }
     gBoard[elCellI][elCellJ].isShown = true;
     expandShown(elCellI, elCellJ, gBoard);
@@ -182,7 +181,6 @@ function cellClicked(elCellClicked, elCellI, elCellJ) {
         livesLeft();
         if (gGame.lives === 0) {
             gBoard[elCellI][elCellJ].isLastMine = true;
-            console.log('elCellClicked:', elCellClicked);
             // elCellClicked.innerText = '🎇';
             gAudioMine.play();
             setTimeout(() => {
@@ -203,18 +201,18 @@ function checkVictory() {
             if (gBoard[i][j].isShown === true) gGame.shownCount++;
         }
     }
-    var foundAllMines =
-        gGame.minesMarkedCount + gGame.minesPressedCount === gLevel.MINES;
-    console.log('gGame:', gGame);
-    var allCellsShown = gGame.shownCount === gLevel.SIZE ** 2 - gGame.markedCount;
+    // var foundAllMines =
+    //     gGame.minesMarkedCount + gGame.minesPressedCount === gLevel.MINES;
+    var allCellsShown =
+        gLevel.SIZE ** 2 === gGame.shownCount + gGame.minesMarkedCount;
     if (
         gGame.isOn &&
+        gGame.minesMarkedCount === gLevel.MINES &&
         gGame.minesPressedCount !== gLevel.MINES &&
-        allCellsShown &&
-        foundAllMines
+        allCellsShown
+        // foundAllMines
     ) {
         gAudioWin.play();
-        console.log('YOU WIN');
         clearInterval(gIntervalId);
         gGame.isOn = false;
         document.querySelector('.smiley').innerHTML = '😎✌';
@@ -236,7 +234,9 @@ function cellMarked(elCell, elCellI, elCellJ) {
     if (!gAfterFirstClick) return;
     var currCell = gBoard[elCellI][elCellJ];
     if (!currCell.isMine && currCell.isShown) return;
-    checkVictory();
+    if (currCell.isShown) {
+        currCell.isShown = false;
+    }
     if (!currCell.isMarked) {
         if (gGame.flags <= 0) return;
         gGame.markedCount++;
@@ -262,6 +262,7 @@ function cellMarked(elCell, elCellI, elCellJ) {
         gAudioFlag.play();
         renderBoard('.board-container');
     }
+    checkVictory();
 }
 
 function remainFlags() {
