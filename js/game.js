@@ -27,7 +27,7 @@ var gGame = {
     flags: gLevel.MINES,
     lives: 3,
     hints: 3,
-    // isHintClicked: false,
+    isHintClicked: false,
 };
 
 function init() {
@@ -42,12 +42,12 @@ function init() {
         flags: gLevel.MINES,
         lives: 3,
         hints: 3,
-        // isHintClicked: false,
+        isHintClicked: false,
     };
     gBoard = buildBoard(gLevel.SIZE);
     renderBoard('.board-container');
     setMinesNegsCount();
-    // hintsLeft();
+    hintsLeft();
     livesLeft();
     remainFlags();
     var elH2Timer = document.querySelector('.timer');
@@ -65,23 +65,23 @@ function restartGame(elSmileyBtn) {
     init();
 }
 
-// function giveHint(elClickedCell) {
-//     gGame.isHintClicked = true;
-//     if (gGame.hints >= 0) {
-//         // elClickedCell.style.color = 'yellow';
-//         gGame.hints--;
-//         hintsLeft();
-//     }
-// }
+function giveHint(elClickedCell) {
+    gGame.isHintClicked = true;
+    if (gGame.hints >= 0) {
+        // elClickedCell.style.color = 'yellow';
+        gGame.hints--;
+        hintsLeft();
+    }
+}
 
-// function hintsLeft() {
-//     var elHints = document.querySelector('.hints');
-//     var strHTML = '';
-//     for (var i = 0; i < gGame.hints; i++) {
-//         strHTML += ` ${HINT}`;
-//     }
-//     elHints.innerHTML = strHTML;
-// }
+function hintsLeft() {
+    var elHints = document.querySelector('.hints');
+    var strHTML = '';
+    for (var i = 0; i < gGame.hints; i++) {
+        strHTML += ` ${HINT}`;
+    }
+    elHints.innerHTML = strHTML;
+}
 
 function livesLeft() {
     var elLives = document.querySelector('.lives');
@@ -116,47 +116,51 @@ function firstCellClicked(elCellClicked, elCellI, elCellJ) {
     elCellClicked.disabled = 'disabled';
 }
 
-// function showCellClickedNegs(cellI, cellJ, gBoard) {
-//     for (var i = cellI - 1; i <= cellI + 1; i++) {
-//         if (i < 0 || i > gBoard.length - 1) continue;
-//         for (var j = cellJ - 1; j <= cellJ + 1; j++) {
-//             if (j < 0 || j > gBoard[i].length - 1) continue;
-//             if (i === cellI && j === cellJ) continue;
-//             if ((gBoard[i][j].isShown = false)) {
-//                 gBoard[i][j].isShown = true;
-//                 console.log(gBoard);
-//             }
-//         }
-//     }
-// }
+function showCellClickedNegs(cellI, cellJ, gBoard) {
+    for (var i = cellI - 1; i <= cellI + 1; i++) {
+        if (i < 0 || i > gBoard.length - 1) continue;
+        for (var j = cellJ - 1; j <= cellJ + 1; j++) {
+            if (j < 0 || j > gBoard[i].length - 1) continue;
+            if (i === cellI && j === cellJ) continue;
+            if ((gBoard[cellI][cellJ].isShown = true)) {
+                gBoard[i][j].isShown = true;
+                console.log(gBoard);
+            }
+        }
+    }
+}
 
-// function unShowCellClickedNegs(cellI, cellJ, gBoard) {
-//     for (var i = cellI - 1; i <= cellI + 1; i++) {
-//         if (i < 0 || i > gBoard.length - 1) continue;
-//         for (var j = cellJ - 1; j <= cellJ + 1; j++) {
-//             if (j < 0 || j > gBoard[i].length - 1) continue;
-//             if (i === cellI && j === cellJ) continue;
-//             if ((gBoard[i][j].isShown = true)) {
-//                 gBoard[i][j].isShown = false;
-//                 console.log(gBoard);
-//             }
-//         }
-//     }
-// }
+function unShowCellClickedNegs(cellI, cellJ, gBoard) {
+    for (var i = cellI - 1; i <= cellI + 1; i++) {
+        if (i < 0 || i > gBoard.length - 1) continue;
+        for (var j = cellJ - 1; j <= cellJ + 1; j++) {
+            if (j < 0 || j > gBoard[i].length - 1) continue;
+            if (i === cellI && j === cellJ) continue;
+            if ((gBoard[cellI][cellJ].isShown = true)) {
+                gBoard[i][j].isShown = false;
+                console.log(gBoard);
+            }
+        }
+    }
+}
 
 function cellClicked(elCellClicked, elCellI, elCellJ) {
     var elSmileyBtn = document.querySelector('.smiley');
     if (gBoard[elCellI][elCellJ].isMarked) return;
     if (gBoard[elCellI][elCellJ].isShown) return;
     if (!gGame.isOn) return;
-    // if (gGame.isHintClicked) {
-    //     console.log('is hint clicked');
-    //     showCellClickedNegs(elCellI, elCellJ, gBoard);
-    //     setTimeout(() => {
-    //         unShowCellClickedNegs(elCellI, elCellJ, gBoard);
-    //     }, 500);
-    //     gGame.isHintClicked = false;
-    // }
+    if (gGame.isHintClicked) {
+        console.log(' hint is clicked');
+
+        showCellClickedNegs(elCellI, elCellJ, gBoard);
+        setTimeout(() => {
+            console.log('breakos');
+            unShowCellClickedNegs(elCellI, elCellJ, gBoard);
+            renderBoard('.board-container');
+        }, 1000);
+
+        gGame.isHintClicked = false;
+    }
     //things I want happen on first click: timer-V, V-randomly apply mines
     if (!gAfterFirstClick) {
         firstCellClicked(elCellClicked, elCellI, elCellJ);
@@ -198,7 +202,7 @@ function checkVictory() {
     gGame.shownCount = 0;
     for (var i = 0; i < gBoard.length; i++) {
         for (var j = 0; j < gBoard.length; j++) {
-            if (gBoard[i][j].isShown === true) gGame.shownCount++;
+            if (gBoard[i][j].isShown) gGame.shownCount++;
         }
     }
     // var foundAllMines =
@@ -224,7 +228,7 @@ function shownCount() {
     gGame.shownCount = 0;
     for (var i = 0; i < gBoard.length; i++) {
         for (var j = 0; j < gBoard.length; j++) {
-            if (gBoard[i][j].isShown === true) gGame.shownCount++;
+            if (gBoard[i][j].isShown) gGame.shownCount++;
         }
     }
 }
@@ -301,8 +305,8 @@ function expandShown(cellI, cellJ, gBoard) {
             if (i === cellI && j === cellJ) continue;
             if (
                 gBoard[i][j].minesAroundCount === 0 &&
-                gBoard[i][j].isMarked === false &&
-                gBoard[i][j].isMine === false
+                !gBoard[i][j].isMarked &&
+                !gBoard[i][j].isMine
             ) {
                 gBoard[i][j].isShown = true;
                 renderBoard('.board-container');
